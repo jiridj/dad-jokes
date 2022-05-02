@@ -52,7 +52,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_IMAGE:${{ needs.prepare.outputs.tag_sha }}
           docker push $ECR_REGISTRY/$ECR_IMAGE:${{ needs.prepare.outputs.tag_name }}
 
-  deploy-dev:
+  deploy-api-dev:
     needs: [prepare, build-and-push]
     uses: ./.github/workflows/deploy-ecs.yml
     with:
@@ -65,7 +65,13 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-  deploy-staging:
+  register-api-dev:
+    needs: [deploy-api-dev]
+    uses: ./.github/workflows/register-wm-apigw.yml
+    with:
+      environment: development
+
+  deploy-api-staging:
     needs: [prepare, build-and-push]
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     uses: ./.github/workflows/deploy-ecs.yml
@@ -79,7 +85,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-  deploy-prod:
+  deploy-api-prod:
     needs: [prepare, build-and-push, deploy-staging]
     uses: ./.github/workflows/deploy-ecs.yml
     with:

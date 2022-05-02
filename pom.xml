@@ -2,7 +2,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.softwareag.demo</groupId>
 	<artifactId>dad-jokes</artifactId>
-	<version>1.1</version>
+	<description>An API for maintaining the ultimate collection of curated dad jokes.</description>
+	<version>1.2</version>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

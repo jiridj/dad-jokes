@@ -1,0 +1,30 @@
+name: Register API with wM APIGW
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      api_specification:
+        required: true
+        type: string
+        
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    outputs:
+      api_name: ${{ steps.compute.outputs.api_name }}
+      api_version: ${{ steps.compute.outputs.api_version }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download API specification
+        run: curl ${{ inputs.api_specification }} --output openapi.json
+      - id: compute
+        run: |
+          api_name=$(jq '.info.title' openapi.json)
+          api_name+="-${{ inputs.environment }}"
+          api_version=$(jq '.info.version' openapi.json)
+          echo "::set-output name=api_name::${api_name}"
+          echo "::set-output name=api_version::${api_version}"

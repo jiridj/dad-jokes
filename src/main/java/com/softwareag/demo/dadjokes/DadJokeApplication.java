@@ -8,9 +8,9 @@ import io.swagger.v3.oas.annotations.info.Info;
 
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(
-		title = "Dad jokes API",
-		version = "1.0",
-		description = "An API for maintaining the ultimate collection of curated dad jokes."
+		title = "${application.name}",
+		version = "${application.version}",
+		description = "${application.description}"
 ))
 public class DadJokeApplication {
 	
