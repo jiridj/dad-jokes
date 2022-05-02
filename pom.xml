@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.softwareag.demo</groupId>
 	<artifactId>dad-jokes</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -97,6 +97,10 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
