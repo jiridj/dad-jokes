@@ -58,10 +58,6 @@ jobs:
           service: ${{ inputs.service_name }}
           cluster: ${{ inputs.cluster_name }}
           wait-for-service-stability: true
-  verify-availability:
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
-    steps:
       - name: Verify service availability
         uses: jtalk/url-health-check-action@v2
         with:
