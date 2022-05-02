@@ -53,7 +53,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_IMAGE:${{ needs.prepare.outputs.tag_name }}
 
   deploy-dev:
-    needs: [prepare, build]
+    needs: [prepare, build-and-push]
     uses: ./.github/workflows/deploy-ecs.yml
     with:
       environment: development
@@ -66,7 +66,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   deploy-staging:
-    needs: [prepare, build]
+    needs: [prepare, build-and-push]
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     uses: ./.github/workflows/deploy-ecs.yml
     with:
@@ -80,7 +80,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   deploy-prod:
-    needs: [prepare, build, deploy-staging]
+    needs: [prepare, build-and-push, deploy-staging]
     uses: ./.github/workflows/deploy-ecs.yml
     with:
       environment: production
