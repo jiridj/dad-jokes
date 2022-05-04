@@ -76,8 +76,8 @@ jobs:
         run: curl ${{ secrets.SPEC_URL }} --output openapi.json
       - id: compute
         run: |
-          API_NAME=$(jq '.info.title' openapi.json) | tr -d '"'
-          API_VERSION=$(jq '.info.version' openapi.json) | tr -d '"'
+          API_NAME=$(jq '.info.title' openapi.json | tr -d '"')
+          API_VERSION=$(jq '.info.version' openapi.json | tr -d '"')
           echo "::set-output name=api-name::${API_NAME}"
           echo "::set-output name=api-version::${API_VERSION}"
       - id: find-api
