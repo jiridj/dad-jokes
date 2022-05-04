@@ -33,7 +33,7 @@ on:
         required: true
         
 jobs:
-  deploy-to-ecs:
+  deploy-ecs-wm-apigw:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
@@ -67,12 +67,6 @@ jobs:
           service: ${{ inputs.service_name }}
           cluster: ${{ inputs.cluster_name }}
           wait-for-service-stability: true
-
-  deploy-to-apigw:
-    needs: [deploy-to-ecs]
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
-    steps:
       - name: Download API spec
         run: curl ${{ secrets.SPEC_URL }} --output openapi.json
       - id: compute
