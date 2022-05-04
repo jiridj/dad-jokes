@@ -6,17 +6,17 @@ on:
       environment:
         required: true
         type: string
-      api_specification: 
-        required: true
-        type: string
     secrets:
-      API_GW_URL:
+      APIGW_URL:
         required: true
         type: string
-      API_GW_USERNAME:
+      APIGW_USERNAME:
         required: true
         type: string
-      API_GW_PASSWORD:
+      APIGW_PASSWORD:
+        required: true
+        type: string
+      SPEC_URL: 
         required: true
         type: string
 
@@ -31,7 +31,7 @@ jobs:
       api-is-active: ${{ steps.find-api.outputs.api-is-active }}
     steps:
       - name: Download API spec
-        run: curl ${{ inputs.api_specification }} --output openapi.json
+        run: curl ${{ secrets.SPEC_URL }} --output openapi.json
       - id: compute
         run: |
           API_NAME=$(jq '.info.title' openapi.json)
@@ -41,9 +41,9 @@ jobs:
       - id: find-api
         uses: jiridj/wm-apigw-actions-find-api@v1
         with:
-          apigw-url: ${{ secrets.API_GW_URL }}
-          apigw-username: ${{ secrets.API_GW_USERNAME }}
-          apigw-password: ${{ secrets.API_GW_PASSWORD }}
+          apigw-url: ${{ secrets.APIGW_URL }}
+          apigw-username: ${{ secrets.APIGW_USERNAME }}
+          apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-name: ${{ steps.compute.outputs.api-name }}
           api-version: ${{ steps.compute.outputs.api-version }}
           fail-if-not-found: false
@@ -58,17 +58,17 @@ jobs:
         uses: jiridj/wm-apigw-actions-create-api@v1
         if: steps.find-api.outputs.api-id == ''
         with: 
-          apigw-url: ${{ secrets.API_GW_URL }}
-          apigw-user: ${{ secrets.API_GW_USERNAME }}
-          apigw-password: ${{ secrets.API_GW_PASSWORD }}
+          apigw-url: ${{ secrets.APIGW_URL }}
+          apigw-user: ${{ secrets.APIGW_USERNAME }}
+          apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-spec: 'openapi.json'
           api-spec-type: 'openapi'
       - id: activate-api
         uses: jiridj/wm-apigw-actions-activate-api@v1
         with:
-          apigw-url: ${{ secrets.API_GW_URL }}
-          apigw-user: ${{ secrets.API_GW_USERNAME }}
-          apigw-password: ${{ secrets.API_GW_PASSWORD }}
+          apigw-url: ${{ secrets.APIGW_URL }}
+          apigw-user: ${{ secrets.APIGW_USERNAME }}
+          apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-id: ${{ steps.find-api.outputs.api-id }}
           activate: true
           
@@ -82,27 +82,27 @@ jobs:
         if: needs.prepare.outputs.api-is-active
         uses: jiridj/wm-apigw-actions-activate-api@v1
         with:
-          apigw-url: ${{ secrets.API_GW_URL }}
-          apigw-user: ${{ secrets.API_GW_USERNAME }}
-          apigw-password: ${{ secrets.API_GW_PASSWORD }}
+          apigw-url: ${{ secrets.APIGW_URL }}
+          apigw-user: ${{ secrets.APIGW_USERNAME }}
+          apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-id: ${{ needs.prepare.outputs.api-id }}
           activate: false
       - id: update-api
         uses: jiridj/wm-apigw-actions-update-api@v1
         if: steps.find-api.outputs.api-id != ''
         with: 
-          apigw-url: ${{ secrets.API_GW_URL }}
-          apigw-user: ${{ secrets.API_GW_USERNAME }}
-          apigw-password: ${{ secrets.API_GW_PASSWORD }}
+          apigw-url: ${{ secrets.APIGW_URL }}
+          apigw-user: ${{ secrets.APIGW_USERNAME }}
+          apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-id: ${{ needs.prepare.outputs.api-id }}
           api-spec: 'openapi.json'
           api-spec-type: 'openapi'
       - id: activate-api
         uses: jiridj/wm-apigw-actions-activate-api@v1
         with:
-          apigw-url: ${{ secrets.API_GW_URL }}
-          apigw-user: ${{ secrets.API_GW_USERNAME }}
-          apigw-password: ${{ secrets.API_GW_PASSWORD }}
+          apigw-url: ${{ secrets.APIGW_URL }}
+          apigw-user: ${{ secrets.APIGW_USERNAME }}
+          apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-id: ${{ needs.prepare.outputs.api-id }}
           activate: true
         

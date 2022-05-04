@@ -70,11 +70,11 @@ jobs:
     uses: ./.github/workflows/deploy-wm-apigw.yml
     with: 
       environment: development
-      api_specification: ${{ secrets.APP_URL }}/v3/api-docs
     secrets:
-      API_GW_URL: ${{ secrets.API_GW_URL }}
-      API_GW_USERNAME: ${{ secrets.API_GW_USERNAME }}
-      API_GW_PASSWORD: ${{ secrets.API_GW_PASSWORD }}
+      API_GW_URL: ${{ secrets.APIGW_URL }}
+      API_GW_USERNAME: ${{ secrets.APIGW_USERNAME }}
+      API_GW_PASSWORD: ${{ secrets.APIGW_PASSWORD }}
+      SPEC_URL: ${{ secrets.APP_URL }}/v3/api-docs
 
   deploy-staging-ecs:
     needs: [prepare, build-and-push]
@@ -95,11 +95,11 @@ jobs:
     uses: ./.github/workflows/deploy-wm-apigw.yml
     with: 
       environment: staging
-      api_specification: ${{ secrets.APP_URL }}/v3/api-docs
     secrets:
-      API_GW_URL: ${{ secrets.API_GW_URL }}
-      API_GW_USERNAME: ${{ secrets.API_GW_USERNAME }}
-      API_GW_PASSWORD: ${{ secrets.API_GW_PASSWORD }}
+      API_GW_URL: ${{ secrets.APIGW_URL }}
+      API_GW_USERNAME: ${{ secrets.APIGW_USERNAME }}
+      API_GW_PASSWORD: ${{ secrets.APIGW_PASSWORD }}
+      SPEC_URL: ${{ secrets.APP_URL }}/v3/api-docs
 
   deploy-prod-ecs:
     needs: [prepare, build-and-push, deploy-staging-ecs]
@@ -119,8 +119,8 @@ jobs:
     uses: ./.github/workflows/deploy-wm-apigw.yml
     with: 
       environment: production
-      api_specification: ${{ secrets.APP_URL }}/v3/api-docs
     secrets:
-      API_GW_URL: ${{ secrets.API_GW_URL }}
-      API_GW_USERNAME: ${{ secrets.API_GW_USERNAME }}
-      API_GW_PASSWORD: ${{ secrets.API_GW_PASSWORD }}
+      API_GW_URL: ${{ secrets.APIGW_URL }}
+      API_GW_USERNAME: ${{ secrets.APIGW_USERNAME }}
+      API_GW_PASSWORD: ${{ secrets.APIGW_PASSWORD }}
+      SPEC_URL: ${{ secrets.APP_URL }}/v3/api-docs
