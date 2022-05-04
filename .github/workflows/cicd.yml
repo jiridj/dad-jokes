@@ -71,9 +71,9 @@ jobs:
     with: 
       environment: development
     secrets:
-      API_GW_URL: ${{ secrets.APIGW_URL }}
-      API_GW_USERNAME: ${{ secrets.APIGW_USERNAME }}
-      API_GW_PASSWORD: ${{ secrets.APIGW_PASSWORD }}
+      APIGW_URL: ${{ secrets.APIGW_URL }}
+      APIGW_USERNAME: ${{ secrets.APIGW_USERNAME }}
+      APIGW_PASSWORD: ${{ secrets.APIGW_PASSWORD }}
       SPEC_URL: ${{ secrets.APP_URL }}/v3/api-docs
 
   deploy-staging-ecs:
@@ -96,9 +96,9 @@ jobs:
     with: 
       environment: staging
     secrets:
-      API_GW_URL: ${{ secrets.APIGW_URL }}
-      API_GW_USERNAME: ${{ secrets.APIGW_USERNAME }}
-      API_GW_PASSWORD: ${{ secrets.APIGW_PASSWORD }}
+      APIGW_URL: ${{ secrets.APIGW_URL }}
+      APIGW_USERNAME: ${{ secrets.APIGW_USERNAME }}
+      APIGW_PASSWORD: ${{ secrets.APIGW_PASSWORD }}
       SPEC_URL: ${{ secrets.APP_URL }}/v3/api-docs
 
   deploy-prod-ecs:
@@ -120,7 +120,7 @@ jobs:
     with: 
       environment: production
     secrets:
-      API_GW_URL: ${{ secrets.APIGW_URL }}
-      API_GW_USERNAME: ${{ secrets.APIGW_USERNAME }}
-      API_GW_PASSWORD: ${{ secrets.APIGW_PASSWORD }}
+      APIGW_URL: ${{ secrets.APIGW_URL }}
+      APIGW_USERNAME: ${{ secrets.APIGW_USERNAME }}
+      APIGW_PASSWORD: ${{ secrets.APIGW_PASSWORD }}
       SPEC_URL: ${{ secrets.APP_URL }}/v3/api-docs
