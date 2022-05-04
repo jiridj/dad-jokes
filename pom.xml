@@ -3,7 +3,7 @@
 	<groupId>com.softwareag.demo</groupId>
 	<artifactId>dad-jokes</artifactId>
 	<description>An API for maintaining the ultimate collection of curated dad jokes.</description>
-	<version>1.2</version>
+	<version>1.3</version>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
