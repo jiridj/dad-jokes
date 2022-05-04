@@ -54,6 +54,7 @@ jobs:
 
   deploy-dev:
     needs: [prepare, build-and-push]
+    if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/deploy-stage.yml
     with:
       environment: development
