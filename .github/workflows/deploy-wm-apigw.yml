@@ -38,7 +38,7 @@ jobs:
         uses: jiridj/wm-apigw-actions-find-api@v1
         with:
           apigw-url: ${{ secrets.APIGW_URL }}
-          apigw-username: ${{ secrets.APIGW_USERNAME }}
+          apigw-user: ${{ secrets.APIGW_USERNAME }}
           apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-name: ${{ steps.compute.outputs.api-name }}
           api-version: ${{ steps.compute.outputs.api-version }}
