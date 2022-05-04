@@ -17,14 +17,9 @@ on:
         required: true
 
 jobs:
-  prepare:
+  create-or-update:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
-    outputs:
-      api-id: ${{ steps.find-api.outputs.api-id }}
-      api-name: ${{ steps.compute.outputs.api-name }}
-      api-version: ${{ steps.compute.outputs.api-version }} 
-      api-is-active: ${{ steps.find-api.outputs.api-is-active }}
     steps:
       - name: Download API spec
         run: curl ${{ secrets.SPEC_URL }} --output openapi.json
@@ -43,13 +38,6 @@ jobs:
           api-name: ${{ steps.compute.outputs.api-name }}
           api-version: ${{ steps.compute.outputs.api-version }}
           fail-if-not-found: false
-          
-  create-api:
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
-    needs: [prepare]
-    if: needs.prepare.outputs.api-id == ''
-    steps:
       - id: create-api
         uses: jiridj/wm-apigw-actions-create-api@v1
         if: steps.find-api.outputs.api-id == ''
@@ -59,30 +47,7 @@ jobs:
           apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-spec: 'openapi.json'
           api-spec-type: 'openapi'
-      - id: activate-api
-        uses: jiridj/wm-apigw-actions-activate-api@v1
-        with:
-          apigw-url: ${{ secrets.APIGW_URL }}
-          apigw-user: ${{ secrets.APIGW_USER }}
-          apigw-password: ${{ secrets.APIGW_PASSWORD }}
-          api-id: ${{ steps.find-api.outputs.api-id }}
           set-active: true
-          
-  update-api:
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
-    needs: [prepare]
-    if: needs.prepare.outputs.api-id == ''
-    steps:
-      - id: deactivate-api
-        if: needs.prepare.outputs.api-is-active
-        uses: jiridj/wm-apigw-actions-activate-api@v1
-        with:
-          apigw-url: ${{ secrets.APIGW_URL }}
-          apigw-user: ${{ secrets.APIGW_USER }}
-          apigw-password: ${{ secrets.APIGW_PASSWORD }}
-          api-id: ${{ needs.prepare.outputs.api-id }}
-          set-active: false
       - id: update-api
         uses: jiridj/wm-apigw-actions-update-api@v1
         if: steps.find-api.outputs.api-id != ''
@@ -93,13 +58,6 @@ jobs:
           api-id: ${{ needs.prepare.outputs.api-id }}
           api-spec: 'openapi.json'
           api-spec-type: 'openapi'
-      - id: activate-api
-        uses: jiridj/wm-apigw-actions-activate-api@v1
-        with:
-          apigw-url: ${{ secrets.APIGW_URL }}
-          apigw-user: ${{ secrets.APIGW_USER }}
-          apigw-password: ${{ secrets.APIGW_PASSWORD }}
-          api-id: ${{ needs.prepare.outputs.api-id }}
           set-active: true
         
         
