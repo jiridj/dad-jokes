@@ -89,7 +89,7 @@ jobs:
 
   deploy-prod:
     needs: [prepare, build-and-push, deploy-staging]
-    uses: ./.github/workflows/deploy-ecs.yml
+    uses: ./.github/workflows/deploy-stage.yml
     with:
       environment: production
       cluster_name: api-landscape
