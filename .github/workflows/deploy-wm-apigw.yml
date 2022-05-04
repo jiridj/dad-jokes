@@ -9,7 +9,7 @@ on:
     secrets:
       APIGW_URL:
         required: true
-      APIGW_USERNAME:
+      APIGW_USER:
         required: true
       APIGW_PASSWORD:
         required: true
@@ -38,7 +38,7 @@ jobs:
         uses: jiridj/wm-apigw-actions-find-api@v1
         with:
           apigw-url: ${{ secrets.APIGW_URL }}
-          apigw-user: ${{ secrets.APIGW_USERNAME }}
+          apigw-user: ${{ secrets.APIGW_USER }}
           apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-name: ${{ steps.compute.outputs.api-name }}
           api-version: ${{ steps.compute.outputs.api-version }}
@@ -55,7 +55,7 @@ jobs:
         if: steps.find-api.outputs.api-id == ''
         with: 
           apigw-url: ${{ secrets.APIGW_URL }}
-          apigw-user: ${{ secrets.APIGW_USERNAME }}
+          apigw-user: ${{ secrets.APIGW_USER }}
           apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-spec: 'openapi.json'
           api-spec-type: 'openapi'
@@ -63,7 +63,7 @@ jobs:
         uses: jiridj/wm-apigw-actions-activate-api@v1
         with:
           apigw-url: ${{ secrets.APIGW_URL }}
-          apigw-user: ${{ secrets.APIGW_USERNAME }}
+          apigw-user: ${{ secrets.APIGW_USER }}
           apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-id: ${{ steps.find-api.outputs.api-id }}
           activate: true
@@ -79,7 +79,7 @@ jobs:
         uses: jiridj/wm-apigw-actions-activate-api@v1
         with:
           apigw-url: ${{ secrets.APIGW_URL }}
-          apigw-user: ${{ secrets.APIGW_USERNAME }}
+          apigw-user: ${{ secrets.APIGW_USER }}
           apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-id: ${{ needs.prepare.outputs.api-id }}
           activate: false
@@ -88,7 +88,7 @@ jobs:
         if: steps.find-api.outputs.api-id != ''
         with: 
           apigw-url: ${{ secrets.APIGW_URL }}
-          apigw-user: ${{ secrets.APIGW_USERNAME }}
+          apigw-user: ${{ secrets.APIGW_USER }}
           apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-id: ${{ needs.prepare.outputs.api-id }}
           api-spec: 'openapi.json'
@@ -97,7 +97,7 @@ jobs:
         uses: jiridj/wm-apigw-actions-activate-api@v1
         with:
           apigw-url: ${{ secrets.APIGW_URL }}
-          apigw-user: ${{ secrets.APIGW_USERNAME }}
+          apigw-user: ${{ secrets.APIGW_USER }}
           apigw-password: ${{ secrets.APIGW_PASSWORD }}
           api-id: ${{ needs.prepare.outputs.api-id }}
           activate: true

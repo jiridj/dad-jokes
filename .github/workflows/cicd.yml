@@ -72,7 +72,7 @@ jobs:
       environment: development
     secrets:
       APIGW_URL: ${{ secrets.APIGW_URL }}
-      APIGW_USERNAME: ${{ secrets.APIGW_USERNAME }}
+      APIGW_USER: ${{ secrets.APIGW_USER }}
       APIGW_PASSWORD: ${{ secrets.APIGW_PASSWORD }}
       SPEC_URL: ${{ secrets.APP_URL }}/v3/api-docs
 
@@ -97,7 +97,7 @@ jobs:
       environment: staging
     secrets:
       APIGW_URL: ${{ secrets.APIGW_URL }}
-      APIGW_USERNAME: ${{ secrets.APIGW_USERNAME }}
+      APIGW_USER: ${{ secrets.APIGW_USER }}
       APIGW_PASSWORD: ${{ secrets.APIGW_PASSWORD }}
       SPEC_URL: ${{ secrets.APP_URL }}/v3/api-docs
 
@@ -121,6 +121,6 @@ jobs:
       environment: production
     secrets:
       APIGW_URL: ${{ secrets.APIGW_URL }}
-      APIGW_USERNAME: ${{ secrets.APIGW_USERNAME }}
+      APIGW_USER: ${{ secrets.APIGW_USER }}
       APIGW_PASSWORD: ${{ secrets.APIGW_PASSWORD }}
       SPEC_URL: ${{ secrets.APP_URL }}/v3/api-docs
