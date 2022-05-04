@@ -23,6 +23,14 @@ on:
         required: true
       AWS_SECRET_ACCESS_KEY:
         required: true
+      APIGW_URL:
+        required: true
+      APIGW_USER:
+        required: true
+      APIGW_PASSWORD:
+        required: true
+      SPEC_URL: 
+        required: true
         
 jobs:
   deploy-to-ecs:
@@ -58,3 +66,47 @@ jobs:
           service: ${{ inputs.service_name }}
           cluster: ${{ inputs.cluster_name }}
           wait-for-service-stability: true
+
+  deploy-to-apigw:
+    needs: [deploy-to-ecs]
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Download API spec
+        run: curl ${{ secrets.SPEC_URL }} --output openapi.json
+      - id: compute
+        run: |
+          API_NAME=$(jq '.info.title' openapi.json)
+          API_VERSION=$(jq '.info.version' openapi.json)
+          echo "::set-output name=api-name::${API_NAME}"
+          echo "::set-output name=api-version::${API_VERSION}"
+      - id: find-api
+        uses: jiridj/wm-apigw-actions-find-api@v1
+        with:
+          apigw-url: ${{ secrets.APIGW_URL }}
+          apigw-user: ${{ secrets.APIGW_USER }}
+          apigw-password: ${{ secrets.APIGW_PASSWORD }}
+          api-name: ${{ steps.compute.outputs.api-name }}
+          api-version: ${{ steps.compute.outputs.api-version }}
+          fail-if-not-found: false
+      - id: create-api
+        uses: jiridj/wm-apigw-actions-create-api@v1
+        if: steps.find-api.outputs.api-id == ''
+        with: 
+          apigw-url: ${{ secrets.APIGW_URL }}
+          apigw-user: ${{ secrets.APIGW_USER }}
+          apigw-password: ${{ secrets.APIGW_PASSWORD }}
+          api-spec: 'openapi.json'
+          api-spec-type: 'openapi'
+          set-active: true
+      - id: update-api
+        uses: jiridj/wm-apigw-actions-update-api@v1
+        if: steps.find-api.outputs.api-id != ''
+        with: 
+          apigw-url: ${{ secrets.APIGW_URL }}
+          apigw-user: ${{ secrets.APIGW_USER }}
+          apigw-password: ${{ secrets.APIGW_PASSWORD }}
+          api-id: ${{ needs.prepare.outputs.api-id }}
+          api-spec: 'openapi.json'
+          api-spec-type: 'openapi'
+          set-active: true
