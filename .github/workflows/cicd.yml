@@ -71,7 +71,7 @@ jobs:
       SPEC_URL: ${{ secrets.APP_URL }}/v3/api-docs
 
   deploy-staging:
-    needs: [prepare, build-and-push]
+    needs: [prepare, build-and-push, deploy-dev]
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     uses: ./.github/workflows/deploy-stage.yml
     with:
@@ -89,7 +89,7 @@ jobs:
       SPEC_URL: ${{ secrets.APP_URL }}/v3/api-docs
 
   deploy-prod:
-    needs: [prepare, build-and-push]
+    needs: [prepare, build-and-push, deploy-staging]
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     uses: ./.github/workflows/deploy-stage.yml
     with:
